@@ -3,10 +3,11 @@ const Discord = require('discord.js');
 
 const options = {
 
-    name: 'setign',
+    name: 'setisland',
 
-    usage: '<In-game name>',
-    description: 'Sets your IGN individually for the join queue message.',
+    usage: '<Island name>',
+
+    description: 'Sets your island name individually for the join queue message.',
 
     cooldown: 3,
     minArgs: 1,
@@ -20,15 +21,15 @@ async function execute(message, args, db) {
 
     // update that information in the db
     const userdataDB = db.collection('userdata');
-    await userdataDB.updateOne({ userID: message.author.id }, { $set: { ign: value } }, { upsert: true });
+    await userdataDB.updateOne({ userID: message.author.id }, { $set: { island: value } }, { upsert: true });
 
     const userArr = await userdataDB.find({ userID: message.author.id }).toArray();
     const { ign, island } = userArr[0];
 
-    console.log(`[ INFO ]  > IGN set to ${value}`);
+    console.log(`[ INFO ]  > Island set to ${value}`);
 
     const replyEmbed = new Discord.RichEmbed().setColor(config.colors.success)
-        .setTitle('IGN set.')
+        .setTitle('Island name set.')
         .setDescription(`**IGN**: \`${ign || '[no data]'}\` \n**Island**: \`${island || '[no data]'}\``);
     return message.channel.send(replyEmbed);
 }

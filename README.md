@@ -1,5 +1,7 @@
 # QueueBot
-Queue bot for Discord, written for the [Pokemon Sword & Shield Discord](http://discord.gg/pokemonswordshield "Pokemon Sword & Shield Discord") 
+Originally made by detjensrobert as a [Pokemon Sword & Shield Discord QueueBot](https://github.com/detjensrobert/QueueBot).
+
+Adapted from there to work as a queue bot for Animal Crossing New horizons.
 
 ------------
 
@@ -38,7 +40,7 @@ Queue channels are visible to everyone, but only QueueBot, the queue host, queue
 
 	Adds user to queue `<queue-name>` (if it exists), and posts their info in that queue's channel.
 
-- `!queue set <Switch profile name> | <In-game name> | (SW-)XXXX-XXXX-XXXX`
+- `!queue set <In-game name> | <Island name>`
 
 	Users can set their profile data for the join message.
 	

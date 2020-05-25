@@ -1,14 +1,14 @@
-const config = require('../config.json');
+const config = require('../config');
 const Discord = require('discord.js');
 
 const options = {
 
-	name: 'help',
-	aliases: ['info', '?', 'h'],
+    name: 'help',
+    aliases: ['info', '?', 'h'],
 
-	description: 'Shows this list of commands.',
+    description: 'Shows this list of commands.',
 
-	cooldown: 5,
+    cooldown: 5,
 };
 /* == HELP MESSAGE FORMAT ==
  * $NAME ($ALIASES)
@@ -21,43 +21,43 @@ const options = {
 
 async function execute(message) {
 
-	console.log("[ INFO ] Showing help");
+    console.log('[ INFO ] Showing help');
 
-	const commands = message.client.commands;
+    const commands = message.client.commands;
 
-	const helpEmbed = new Discord.RichEmbed().setColor(config.colors.info)
-		.setAuthor("QueueBot Help", message.client.user.displayAvatarURL)
-		.setFooter("QueueBot created by WholeWheatBagels", 'https://cdn.discordapp.com/avatars/197460469336899585/efb49d183b81f30c42b25517e057a704.png');
+    const helpEmbed = new Discord.RichEmbed().setColor(config.colors.info)
+        .setAuthor('QueueBot Help', message.client.user.displayAvatarURL)
+        .setFooter('QueueBot created by WholeWheatBagels', 'https://cdn.discordapp.com/avatars/197460469336899585/efb49d183b81f30c42b25517e057a704.png');
 
-	commands.forEach((cmd) => {
+    commands.forEach((cmd) => {
 
-		//               .. only show role-restricted commands if member is in a server and they have that role
-		if (!cmd.roleRestrict || (cmd.roleRestrict && message.guild && message.member.roles.has(config.roles[`${cmd.roleRestrict}`]))) {
+        //               .. only show role-restricted commands if member is in a server and they have that role
+        if (!cmd.roleRestrict || (cmd.roleRestrict && message.guild && message.member.roles.has(config.roles[`${cmd.roleRestrict}`]))) {
 
-			let helpStr = cmd.description;
+            let helpStr = cmd.description;
 
-			if (cmd.usage) {
-				helpStr += `\n\`${config.prefix}${cmd.name} ${cmd.usage}\``;
-			}
-			else {
-				helpStr += `\n\`${config.prefix}${cmd.name}\``;
-			}
+            if (cmd.usage) {
+                helpStr += `\n\`${config.prefix}${cmd.name} ${cmd.usage}\``;
+            }
+            else {
+                helpStr += `\n\`${config.prefix}${cmd.name}\``;
+            }
 
-			if (cmd.example) {
-				helpStr += `\nExample:\n- \`${config.prefix}${cmd.name} ${cmd.example}\``;
-			}
+            if (cmd.example) {
+                helpStr += `\nExample:\n- \`${config.prefix}${cmd.name} ${cmd.example}\``;
+            }
 
-			if (cmd.roleRestrict) {
-				const roleID = config.roles[`${cmd.roleRestrict}`];
-				helpStr += `\n*(Restricted to @${ message.guild.roles.get(roleID).name } only)*`;
-			}
+            if (cmd.roleRestrict) {
+                const roleID = config.roles[`${cmd.roleRestrict}`];
+                helpStr += `\n*(Restricted to @${ message.guild.roles.get(roleID).name } only)*`;
+            }
 
-			helpEmbed.addField(`**${cmd.name}**` + (cmd.aliases ? ", " + cmd.aliases.join(", ") : ""), helpStr);
+            helpEmbed.addField(`**${cmd.name}**` + (cmd.aliases ? ', ' + cmd.aliases.join(', ') : ''), helpStr);
 
-		}
-	});
+        }
+    });
 
-	message.channel.send(helpEmbed);
+    message.channel.send(helpEmbed);
 
 }
 
