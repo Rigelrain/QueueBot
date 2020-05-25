@@ -63,5 +63,3 @@ typings/
 # ignore sensitive config files
 token.json
 mongodb_config.json
-
-.eslintrc.json

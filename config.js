@@ -8,7 +8,7 @@ module.exports = {
         warn: '#FFC107',
     },
 	
-    reactEmoji: '<:pokeball:667267492598513684>',
+    reactEmoji: '💟',
 	
     queueCategoryID: '651614725804654629',
     queueListChannelID: '667255470414626816',
