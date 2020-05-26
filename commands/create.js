@@ -1,10 +1,10 @@
-const config = require('../config');
+const config = require('../config/config');
 const Discord = require('discord.js');
 
 const options = {
 
-    name: 'open',
-    aliases: ['start', 'create'],
+    name: 'create',
+    aliases: ['start', 'open'],
 
     usage: '<queue name> <capacity>',
     description: 'Creates a new queue with the given <queue name> and <capacity>.',
@@ -16,11 +16,14 @@ const options = {
 };
 
 async function execute(message, args, db) {
+    // console.log(`[ DEBUG ] Creating queue started with args: ${JSON.stringify(args, null, 2)}`);
 
     const capacity = parseInt(args.pop());
     const name = args.join('-').toLowerCase();
 
     if (isNaN(capacity) || capacity <= 0) {
+        console.log(`[ ERROR ] Cannot create queue because invalid capacity: ${capacity}`);
+
         const errEmbed = new Discord.RichEmbed().setColor(config.colors.error)
             .setTitle('Oops! Queue capacity needs to be a positive number.')
             .addField('Usage:', `\`${config.prefix}${options.name} ${options.usage}\``);
@@ -29,6 +32,8 @@ async function execute(message, args, db) {
 
     // limit name length to 20 characters
     if (name.length > 20) {
+        console.log(`[ ERROR ] Cannot create queue because invalid name length: ${name.length}`);
+
         const errEmbed = new Discord.RichEmbed().setColor(config.colors.error)
             .setTitle('Oops! Name is too long. Max 20 chars')
             .addField('Usage:', `\`${config.prefix}${options.name} ${options.usage}\``);

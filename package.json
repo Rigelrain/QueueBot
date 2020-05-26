@@ -1,11 +1,11 @@
 {
   "name": "queuebot",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Discord.js queue bot",
   "main": "queuebot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "pm2 start . --name QueueBot",
+    "start": "node queuebot.js",
     "stop": "pm2 stop . --name QueueBot",
     "restart": "pm2 restart . --name QueueBot",
     "fix": "npx eslint . --fix",
@@ -15,12 +15,19 @@
     "type": "git",
     "url": "git+https://github.com/detjensrobert/QueueBot.git"
   },
-  "author": "Robert Detjens / wholewheatbagels",
+  "contributors": [
+    {
+      "name": "Robert Detjens / wholewheatbagels"
+    },
+    {
+      "name": "Sade Sirén / Rigelrain"
+    }
+  ],
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/detjensrobert/QueueBot/issues"
+    "url": "https://github.com/Rigelrain/QueueBot/issues"
   },
-  "homepage": "https://github.com/detjensrobert/QueueBot#readme",
+  "homepage": "https://github.com/Rigelrain/QueueBot#readme",
   "dependencies": {
     "discord.js": "^11.6.2",
     "mongodb": "^3.5.5",

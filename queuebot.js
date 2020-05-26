@@ -6,15 +6,15 @@ const client = new Discord.Client();
 const fs = require('fs');
 
 // grab settings from file
-const { token } = require('./token.json');
-const config = require('./config');
+const { token } = require('./config/token');
+const config = require('./config/config');
 
 // connect to mongodb server
 const MongoClient = require('mongodb').MongoClient;
-const mdbconf = require('./mongodb_config.json');
-mdbconf.port = mdbconf.port || '27017';
+const mdbconf = require('./config/mongodb_config');
+// mdbconf.port = mdbconf.port || '27017';
 // ~ const mongoURL = `mongodb://${mdbconf.user}:${mdbconf.pass}@${mdbconf.host}:${mdbconf.port}/`;
-const mongoURL = `mongodb://${mdbconf.host}:${mdbconf.port}/`;
+const mongoURL = mdbconf.path;
 let db;
 
 // import commands from dir
@@ -69,7 +69,7 @@ client.on('message', message => {
 
 
     // role restricted
-    if (command.roleRestrict && !message.member.roles.has(config.roles[`${command.roleRestrict}`])) { return; }
+    if (command.roleRestrict && !checkRole(message.member, command.roleRestrict) ) { return; }
 
     // argument count
     if (command.minArgs && args.length < command.minArgs) {
@@ -156,6 +156,7 @@ client.on('raw', packet => {
 // Login to database and Discord
 // but only login to Discord once db is ready
 console.log(`[ START ] Connecting to MongoDB... ( ${mongoURL} )`);
+// TODO add useUnifiedTopology: true
 MongoClient.connect(mongoURL, function(err, mongoclient) {
     if (err) { throw err; }
 
@@ -167,3 +168,13 @@ MongoClient.connect(mongoURL, function(err, mongoclient) {
 
 // catch and log promise rejections
 process.on('unhandledRejection', error => console.error('Uncaught Promise Rejection', error));
+
+function checkRole(member, role) {
+    // console.log(`[ DEBUG ] Checking to see if they have ${role} role`);
+    if(member.roles.some(r => config.roles[role].includes(r.id))) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}

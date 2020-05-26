@@ -11,7 +11,7 @@ This bot manages creation and moderation of queue channels. Users can create a q
 
 When a user joins a queue, the bot posts a message with that user's information in the queue's channel like so:
 
-`Position: ## | Switch Profile Name: ## | IGN: ## | Friend Code: ## ` 
+`Position: ## | IGN: ## | Island: ## ` 
 
 Queue channels are visible to everyone, but only QueueBot, the queue host, queue members, and a configurable admin role can send messages.
 
@@ -71,14 +71,16 @@ Queue channels are visible to everyone, but only QueueBot, the queue host, queue
 ### Setup
 Main file is `queuebot.js`.  `npm start` will start the bot.
 
-Bot token goes in `token.json`. Create if not present:
+Configuration files are under `/config`.
+
+Bot token goes in `token.js`. Create if not present:
 ```
 {
   "token": "TOKEN HERE"
 }
 ```
 
-MongoDB settings go in `mongodb_config.json`. Create if not present:
+MongoDB settings go in `mongodb_config.js`. Create if not present:
 ```
 {
   "host": "HOSTNAME",

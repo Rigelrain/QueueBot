@@ -61,5 +61,5 @@ typings/
 .next
 
 # ignore sensitive config files
-token.json
-mongodb_config.json
+token.js*
+mongodb_config.js*
