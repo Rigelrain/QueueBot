@@ -13,7 +13,7 @@ const options = {
     cooldown: 5,
     minArgs: 2,
 
-    roleRestrict: 'middleman',
+    roleRestrict: 'admin', // this command is not really for our purposes, so skip it
 };
 
 async function execute(message, args, db) {
