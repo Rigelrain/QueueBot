@@ -8,6 +8,7 @@ const fs = require('fs');
 // grab settings from file
 const { token } = require('./config/token');
 const config = require('./config/config');
+const helper = require('./js/helpers');
 
 // connect to mongodb server
 const MongoClient = require('mongodb').MongoClient;
@@ -69,7 +70,7 @@ client.on('message', message => {
 
 
     // role restricted
-    if (command.roleRestrict && !checkRole(message.member, command.roleRestrict) ) { return; }
+    if (command.roleRestrict && !helper.checkRole(message.member, command.roleRestrict) ) { return; }
 
     // argument count
     if (command.minArgs && args.length < command.minArgs) {
@@ -168,13 +169,3 @@ MongoClient.connect(mongoURL, function(err, mongoclient) {
 
 // catch and log promise rejections
 process.on('unhandledRejection', error => console.error('Uncaught Promise Rejection', error));
-
-function checkRole(member, role) {
-    // console.log(`[ DEBUG ] Checking to see if they have ${role} role`);
-    if(member.roles.some(r => config.roles[role].includes(r.id))) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}

@@ -1,6 +1,8 @@
 const config = require('../config/config');
 const Discord = require('discord.js');
 
+const helper = require('../js/helpers');
+
 const options = {
 
     name: 'help',
@@ -27,12 +29,12 @@ async function execute(message) {
 
     const helpEmbed = new Discord.RichEmbed().setColor(config.colors.info)
         .setAuthor('QueueBot Help', message.client.user.displayAvatarURL)
-        .setFooter('QueueBot created by WholeWheatBagels', 'https://cdn.discordapp.com/avatars/197460469336899585/efb49d183b81f30c42b25517e057a704.png');
+        .setFooter('QueueBot created for Nook Horizons', ''); // TODO add a PNG image link in here
 
     commands.forEach((cmd) => {
 
-        //               .. only show role-restricted commands if member is in a server and they have that role
-        if (!cmd.roleRestrict || (cmd.roleRestrict && message.guild && message.member.roles.has(config.roles[`${cmd.roleRestrict}`]))) {
+        // only show role-restricted commands if member is in a server and they have that role
+        if (!cmd.roleRestrict || ( cmd.roleRestrict && message.guild && !helper.checkRole(message.member, cmd.roleRestrict) ) ) {
 
             let helpStr = cmd.description;
 
