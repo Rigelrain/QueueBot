@@ -31,7 +31,7 @@ async function execute(message, args, db) {
 
     // update that information in the db
     const userdataDB = db.collection('userdata');
-    await userdataDB.updateOne({ userID: message.author.id }, { $set: { fc: value } }, { upsert: true });
+    await userdataDB.updateOne({ userID: message.author.id }, { $set: { userID: message.author.id, fc: value } }, { upsert: true });
 
     const userArr = await userdataDB.find({ userID: message.author.id }).toArray();
     const { fc, ign, island } = userArr[0];

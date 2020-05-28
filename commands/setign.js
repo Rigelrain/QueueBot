@@ -20,7 +20,7 @@ async function execute(message, args, db) {
 
     // update that information in the db
     const userdataDB = db.collection('userdata');
-    await userdataDB.updateOne({ userID: message.author.id }, { $set: { ign: value } }, { upsert: true });
+    await userdataDB.updateOne({ userID: message.author.id }, { $set: { userID: message.author.id, ign: value } }, { upsert: true });
 
     const userArr = await userdataDB.find({ userID: message.author.id }).toArray();
     const { ign, island } = userArr[0];

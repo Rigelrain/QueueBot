@@ -1,5 +1,4 @@
-const config = require('../config/config');
-const Discord = require('discord.js');
+const helper = require('../js/helpers');
 
 /**
  * This command is for members in the queue to leave the queue,
@@ -23,6 +22,7 @@ const options = {
 async function execute(message, args, db) {
 
     const authorID = message.author.id;
+    console.log(`[ INFO ] > Removing user ${authorID}`);
 
     const queueDB = db.collection('queues');
     const userdataDB = db.collection('userdata');
@@ -34,16 +34,10 @@ async function execute(message, args, db) {
         // remove the user from user database
         await userdataDB.deleteOne({userID: authorID});
 
-        const replyEmbed = new Discord.RichEmbed().setColor(config.colors.success)
-            .setTitle('Deleted!')
-            .setDescription('Your data has now been removed.');
-        return message.channel.send(replyEmbed);
+        return helper.replySuccess(message, 'Deleted!', 'Your data has now been removed.');
     }
     catch(err) {
-        const replyEmbed = new Discord.RichEmbed().setColor(config.colors.success)
-            .setTitle('Oops!')
-            .setDescription('Something went wrong with this command...');
-        return message.channel.send(replyEmbed);
+        return helper.replyGeneralError(message, err);
     }
 }
 
