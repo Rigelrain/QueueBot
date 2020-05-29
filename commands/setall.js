@@ -1,5 +1,5 @@
 const config = require('../config/config');
-const Discord = require('discord.js');
+const helper = require('../js/helpers');
 
 const options = {
 
@@ -18,10 +18,7 @@ async function execute(message, args, db) {
     const values = args.join(' ').split(' | ');
 
     if (values.length != 2) {
-        const errEmbed = new Discord.RichEmbed().setColor(config.colors.error)
-            .setTitle('Oops! Could not parse what you\'re trying to set.')
-            .addField('Usage:', `\`${config.prefix}${options.name} ${options.usage}\``);
-        return message.channel.send(errEmbed);
+        return helper.replyCustomError(message, 'Oops! Could not parse what you\'re trying to set.', `Usage: \`${config.prefix}${options.name} ${options.usage}\``);
     }
 
     console.log(`[ INFO ] Updating userdata for user ${message.author.id}`);
@@ -32,11 +29,7 @@ async function execute(message, args, db) {
 
     console.log(`[ INFO ]  > Userdata set to ${values}`);
 
-    const replyEmbed = new Discord.RichEmbed().setColor(config.colors.success)
-        .setTitle('Info set.')
-        .setDescription(`**IGN**: \`${values[0] || '[no data]'}\` \n**Island name**: \`${values[1] || '[no data]'}\``);
-    return message.channel.send(replyEmbed);
-
+    return helper.replySuccess(message, 'Info set.', `**IGN**: \`${values[0] || '[no data]'}\` \n**Island name**: \`${values[1] || '[no data]'}\``);
 }
 
 module.exports = options;

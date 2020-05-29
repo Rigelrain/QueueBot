@@ -1,5 +1,5 @@
-const config = require('../config/config');
-const Discord = require('discord.js');
+const helper = require('../js/helpers');
+
 
 const options = {
 
@@ -28,10 +28,7 @@ async function execute(message, args, db) {
 
     console.log(`[ INFO ]  > Island set to ${value}`);
 
-    const replyEmbed = new Discord.RichEmbed().setColor(config.colors.success)
-        .setTitle('Island name set.')
-        .setDescription(`**IGN**: \`${ign || '[no data]'}\` \n**Island**: \`${island || '[no data]'}\``);
-    return message.channel.send(replyEmbed);
+    return helper.replySuccess(message, 'Island name set.', `**IGN**: \`${ign || '[no data]'}\` \n**Island**: \`${island || '[no data]'}\``);
 }
 
 module.exports = options;

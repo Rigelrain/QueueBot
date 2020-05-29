@@ -1,5 +1,5 @@
 const config = require('../config/config');
-const Discord = require('discord.js');
+const helper = require('../js/helpers');
 
 const options = {
 
@@ -21,11 +21,7 @@ async function execute(message, args, db) {
     // if not a valid code, abort
     const fcRegex = new RegExp(/(SW-)?[0-9]{4}-[0-9]{4}-[0-9]{4}/);
     if (!(fcRegex.test(value))) {
-        console.log('[ INFO ]  > Bad friendcode. Aborting.');
-        const errEmbed = new Discord.RichEmbed().setColor(config.colors.error)
-            .setTitle('Oops! Could not parse friendcode. Is it formatted correctly?')
-            .addField('Usage:', `\`${config.prefix}${options.name} ${options.usage}\``);
-        return message.channel.send(errEmbed);
+        return helper.replyCustomError(message, 'Oops! Could not parse friendcode. Is it formatted correctly?', `Usage: \`${config.prefix}${options.name} ${options.usage}\``, '> Bad friendcode. Aborting.');
     }
     if (value.length == 14) { value = `SW-${value}`; }
 
@@ -38,10 +34,7 @@ async function execute(message, args, db) {
 
     console.log(`[ INFO ]  > Friendcode set to ${value}`);
 
-    const replyEmbed = new Discord.RichEmbed().setColor(config.colors.success)
-        .setTitle('Friendcode set.')
-        .setDescription(`**IGN**: \`${ign || '[no data]'}\` \n**Island**: \`${island || '[no data]'}\` \n**Friendcode**: \`${fc || '[no data]'}\``);
-    return message.channel.send(replyEmbed);
+    return helper.replySuccess(message, 'Friendcode set.', `**IGN**: \`${ign || '[no data]'}\` \n**Island**: \`${island || '[no data]'}\` \n**Friendcode**: \`${fc || '[no data]'}\``);
 }
 
 module.exports = options;

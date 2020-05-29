@@ -1,5 +1,4 @@
-const config = require('../config/config');
-const Discord = require('discord.js');
+const helper = require('../js/helpers');
 
 const options = {
 
@@ -27,10 +26,7 @@ async function execute(message, args, db) {
 
     console.log(`[ INFO ]  > IGN set to ${value}`);
 
-    const replyEmbed = new Discord.RichEmbed().setColor(config.colors.success)
-        .setTitle('IGN set.')
-        .setDescription(`**IGN**: \`${ign || '[no data]'}\` \n**Island**: \`${island || '[no data]'}\``);
-    return message.channel.send(replyEmbed);
+    return helper.replySuccess(message, 'IGN set.', `**IGN**: \`${ign || '[no data]'}\` \n**Island**: \`${island || '[no data]'}\``);
 }
 
 module.exports = options;
