@@ -69,7 +69,8 @@ async function execute(message, args, db) {
         .setDescription(config.queueCreateMsg)
         .addField(`Capacity:  \` ${capacity} \``, `Host: ${message.author}`)
         .addField('Relevant commands:', `Leave queue: \`${config.prefix} leave\` (you will lose this channel and your spot in this queue)
-        Get next in line (host only): \`${config.prefix} next\``);
+        Get next in line (host only): \`${config.prefix} next\`
+        End queue (host only): \`${config.prefix} end\``);
     queueChannel.send(queueEmbed);
 
     // add new queue to db

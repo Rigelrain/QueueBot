@@ -9,15 +9,14 @@ const helper = require('../js/helpers');
 
 const options = {
 
-    name: 'done',
+    name: 'leave',
 
-    aliases: ['exit', 'leave'],
+    aliases: ['exit', 'done'],
 
     usage: '[queue name]',
     description: 'Removes you from the queue.',
 
     cooldown: 3,
-    minArgs: 1,
 };
 
 // eslint-disable-next-line no-unused-vars

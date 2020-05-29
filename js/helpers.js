@@ -23,20 +23,20 @@ module.exports = {
             console.log(`[ ERROR ] ${err}`);
         }
         const errEmbed = new Discord.RichEmbed().setColor(config.colors.error)
-            .setTitle(title)
+            .setTitle(title? title : 'Oops!')
             .setDescription(description? description : '');
         return message.channel.send(errEmbed);
     },
     replySuccess(message, title, description) {
         const replyEmbed = new Discord.RichEmbed().setColor(config.colors.success)
-            .setTitle(title)
-            .setDescription(description);
+            .setTitle(title? title : 'Success!')
+            .setDescription(description? description : '');
         return message.channel.send(replyEmbed);
     },
     replyToChannel(message, channelID, title, description) {
         const queueEmbed = new Discord.RichEmbed().setColor(config.colors.success)
-            .setTitle(title)
-            .setDescription(description);
+            .setTitle(title? title : 'Hello!')
+            .setDescription(description? description : '');
         message.guild.channels.get(channelID).send(queueEmbed);
     },
 };
