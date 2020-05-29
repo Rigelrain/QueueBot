@@ -26,7 +26,7 @@ for (const file of commandFiles) {
     const command = require('./commands/' + file);
     client.commands.set(command.name, command);
 
-    console.log(`[ START ] Added command: ${command.name}`);
+    console.log(`[ DEBUG ] Added command: ${command.name}`);
 }
 
 const cooldowns = new Discord.Collection();
@@ -106,8 +106,7 @@ client.on('message', message => {
     // ACTUAL COMMAND CALL
     command.execute(message, args, db)
         .catch(err => {
-            console.error(`[ ERROR ] ${err}`);
-            message.reply('there was an error trying to execute that command!');
+            helper.replyGeneralError(message, err);
         });
 
 });

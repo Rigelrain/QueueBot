@@ -27,18 +27,13 @@ async function execute(message, args, db) {
     const queueDB = db.collection('queues');
     const userdataDB = db.collection('userdata');
 
-    try {
-        // remove the userId from all queues
-        await queueDB.updateMany({}, { $pullAll: { users: [ authorID ] } });
+    // remove the userId from all queues
+    await queueDB.updateMany({}, { $pullAll: { users: [ authorID ] } });
         
-        // remove the user from user database
-        await userdataDB.deleteOne({userID: authorID});
+    // remove the user from user database
+    await userdataDB.deleteOne({userID: authorID});
 
-        return helper.replySuccess(message, 'Deleted!', 'Your data has now been removed.');
-    }
-    catch(err) {
-        return helper.replyGeneralError(message, err);
-    }
+    return helper.replySuccess(message, 'Deleted!', 'Your data has now been removed.');
 }
 
 module.exports = options;

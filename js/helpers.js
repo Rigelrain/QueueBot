@@ -33,7 +33,7 @@ module.exports = {
             .setDescription(description);
         return message.channel.send(replyEmbed);
     },
-    replyToChannel(message, channelID,title, description) {
+    replyToChannel(message, channelID, title, description) {
         const queueEmbed = new Discord.RichEmbed().setColor(config.colors.success)
             .setTitle(title)
             .setDescription(description);

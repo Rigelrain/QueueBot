@@ -73,6 +73,8 @@ Main file is `queuebot.js`.  `npm start` will start the bot.
 
 Configuration files are under `/config`.
 
+First make a copy or rename the config-template.js file. New file should be named `config.js`. Overwrite the fields as you see fit.
+
 Bot token goes in `token.js`. Create if not present:
 ```
 {
