@@ -70,8 +70,8 @@ async function execute(message, args, db) {
         return message.channel.send(errEmbed);
     }
 
-    // make channel visible to user
-    message.guild.channels.get(channelID).overwritePermissions(message.author, { 'VIEW_CHANNEL': true, 'SEND_MESSAGES': true });
+    // make channel visible to user + write + see prev messages
+    message.guild.channels.get(channelID).overwritePermissions(message.author, { 'VIEW_CHANNEL': true, 'SEND_MESSAGES': true, 'READ_MESSAGE_HISTORY': true });
 
     // post info to channel
     const { ign, island } = userArr[0];

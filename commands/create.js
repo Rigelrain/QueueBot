@@ -1,5 +1,6 @@
 const config = require('../config/config');
 const Discord = require('discord.js');
+const helper = require('../js/helpers');
 
 const options = {
 
@@ -22,22 +23,12 @@ async function execute(message, args, db) {
     const name = args.join('-').toLowerCase();
 
     if (isNaN(capacity) || capacity <= 0) {
-        console.log(`[ ERROR ] Cannot create queue because invalid capacity: ${capacity}`);
-
-        const errEmbed = new Discord.RichEmbed().setColor(config.colors.error)
-            .setTitle('Oops! Queue capacity needs to be a positive number.')
-            .addField('Usage:', `\`${config.prefix}${options.name} ${options.usage}\``);
-        return message.channel.send(errEmbed);
+        return helper.replyCustomError(message, 'Oops! Queue capacity needs to be a positive number.', `Usage: \`${config.prefix}${options.name} ${options.usage}\``, `Cannot create queue because invalid capacity: ${capacity}`);
     }
 
     // limit name length to 20 characters
     if (name.length > 20) {
-        console.log(`[ ERROR ] Cannot create queue because invalid name length: ${name.length}`);
-
-        const errEmbed = new Discord.RichEmbed().setColor(config.colors.error)
-            .setTitle('Oops! Name is too long. Max 20 chars')
-            .addField('Usage:', `\`${config.prefix}${options.name} ${options.usage}\``);
-        return message.channel.send(errEmbed);
+        return helper.replyCustomError(message, 'Oops! Name is too long. Max 20 chars.', `Usage: \`${config.prefix}${options.name} ${options.usage}\``, `Cannot create queue because invalid name length: ${name.length}`);
     }
 
     console.log(`[ INFO ] Creating queue with name "${name}" and capacity ${capacity}`);
@@ -49,20 +40,23 @@ async function execute(message, args, db) {
 
     // if name already in use, abort
     if (findarr.length != 0) {
-        console.log('[ INFO ]  > Duplicate name. Aborting.');
-        const errEmbed = new Discord.RichEmbed().setColor(config.colors.error)
-            .setTitle('Oops! A queue with that name already exists. Please choose a different name.')
-            .addField('Usage:', `\`${config.prefix}${options.name} ${options.usage}\``);
-        return message.channel.send(errEmbed);
+        return helper.replyCustomError(message, 'Oops! A queue with that name already exists. Please choose a different name.', `Usage: \`${config.prefix}${options.name} ${options.usage}\``, '> Duplicate name. Aborting.');
     }
 
     // create channel w/ perms (only allow needed people access to channel)
     const permissions = [
         { id: message.client.user, allow: ['VIEW_CHANNEL', 'SEND_MESSAGES'] }, // the bot can send
-        { id: message.author, allow: ['VIEW_CHANNEL'] }, // queue host can see
+        { id: message.author, allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY'] }, // queue host can see and send
         { id: message.guild.id, deny: ['VIEW_CHANNEL'] }, // @everyone cannot
-        { id: config.roles.admin, allow: ['VIEW_CHANNEL', 'SEND_MESSAGES'] }, // admin role can send
     ];
+
+    // admin role(s) can send
+    config.roles.admin.forEach(roleID => {
+        permissions.push({
+            id: roleID, 
+            allow: ['VIEW_CHANNEL', 'SEND_MESSAGES','READ_MESSAGE_HISTORY'],
+        });
+    });
 
     const queueChannel = await message.guild.createChannel(name, {
         type: 'text',
@@ -71,8 +65,11 @@ async function execute(message, args, db) {
     });
 
     const queueEmbed = new Discord.RichEmbed().setColor(config.colors.info)
-        .setTitle(`**Queue \`${name}\`**`)
-        .addField(`Capacity:  \` ${capacity} \``, `Host: ${message.author}`);
+        .setTitle(`**Queue ${name}**`)
+        .setDescription(config.queueCreateMsg)
+        .addField(`Capacity:  \` ${capacity} \``, `Host: ${message.author}`)
+        .addField('Relevant commands:', `Leave queue: \`${config.prefix} leave\` (you will lose this channel and your spot in this queue)
+        Get next in line (host only): \`${config.prefix} next\``);
     queueChannel.send(queueEmbed);
 
     // add new queue to db
@@ -85,10 +82,7 @@ async function execute(message, args, db) {
         users: [],
     });
 
-    const replyEmbed = new Discord.RichEmbed().setColor(config.colors.success)
-        .setTitle(`Queue \`${name}\` created.`)
-        .setDescription(`Channel: ${queueChannel}`);
-    message.channel.send(replyEmbed);
+    helper.replySuccess(message, `Queue \`${name}\` created.`, `Channel: ${queueChannel}`);
 
     return;
 }

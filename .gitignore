@@ -63,3 +63,4 @@ typings/
 # ignore sensitive config files
 token.js*
 mongodb_config.js*
+config.js*

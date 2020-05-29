@@ -5,7 +5,7 @@ Adapted from there to work as a queue bot for Animal Crossing New horizons.
 
 ------------
 
-### Overview
+## Overview
 
 This bot manages creation and moderation of queue channels. Users can create a queue with a certain capacity, and other users can join the queue until the capcity is reached.
 
@@ -17,7 +17,7 @@ Queue channels are visible to everyone, but only QueueBot, the queue host, queue
 
 ------------
 
-### Usage
+## Usage
 - `!queue open <queue-name> <length>`
 
 	Creates a new queue with the given name and length, and a new channel `#queue-<queue-name>` under a configured category.
@@ -68,7 +68,7 @@ Queue channels are visible to everyone, but only QueueBot, the queue host, queue
 
 ------------
 
-### Setup
+## Setup
 Main file is `queuebot.js`.  `npm start` will start the bot.
 
 Configuration files are under `/config`.
@@ -82,16 +82,40 @@ Bot token goes in `token.js`. Create if not present:
 }
 ```
 
+### Mongo database
 MongoDB settings go in `mongodb_config.js`. Create if not present:
 ```
-{
-  "host": "HOSTNAME",
-  "user": "USERNAME",
-  "pass": "PASSWORD",
-  "dbname": "DATABASE"
-  "port": "PORT" // Optional, will use default (21017) if not specified
-}
+const params = {
+    user: 'USERNAME',
+    pass: 'PASSWORD',
+};
+
+module.exports = {
+    dbname: 'DATABASE NAME',
+    path: `PATH TO MONGO DB`, // you can utilise the username and password set in params object
+};
 ```
 The bot will use collections `queues` and `userdata`.
+
+**Queues schema**
+```
+{
+	channelID: ID,
+	name: String,
+	host: ID,
+	capacity: Number,
+	taken: Number,
+	users: [ID],
+}
+```
+
+**Userdata schema**
+```
+{ 
+	userID: ID, 
+	ign: String, 
+	island: String,
+}
+```
 
 Make sure the bot has react permissions in the configured `#queue-list` channel!

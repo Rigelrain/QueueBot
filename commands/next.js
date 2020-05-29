@@ -4,7 +4,7 @@ const options = {
 
     name: 'next',
 
-    usage: '<queue-name, optional>',
+    usage: '[queue-name]',
     description: 'Returns the next in line of your queue. If you have more than one queue, please specify the name of your queue.',
 
     cooldown: 3,

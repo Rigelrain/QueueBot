@@ -54,6 +54,8 @@ async function execute(message) {
                 helpStr += `\n*(Restricted to @${ message.guild.roles.get(roleID).name } only)*`;
             }
 
+            helpStr += '\nDo not include <> nor [] - <> means required and [] means optional.';
+
             helpEmbed.addField(`**${cmd.name}**` + (cmd.aliases ? ', ' + cmd.aliases.join(', ') : ''), helpStr);
 
         }
