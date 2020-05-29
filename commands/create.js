@@ -80,6 +80,7 @@ async function execute(message, args, db) {
         host: message.author.id,
         capacity: capacity,
         taken: 0,
+        done: 0,
         users: [],
     });
 

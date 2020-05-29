@@ -1,5 +1,3 @@
-const config = require('../config/config');
-const Discord = require('discord.js');
 const helper = require('../js/helpers');
 
 /**
@@ -34,7 +32,7 @@ async function execute(message, args, db) {
 
     // if queue not found, abort
     if (queueArr.length == 0) {
-        return helper.replyCustomError(message, `Oops! Could not find queue \`${queueName}\``, 'You should either write this in the queue channel or check the spelling.', `> No queue ${queueName} found. Aborting.`);
+        return helper.replyCustomError(message, 'Oops! Could not find queue.', 'You should either write this in the queue channel or check the spelling.', `> No queue ${queueName} found. Aborting.`);
     }
 
     const { users, channelID, taken, capacity } = queueArr[0];
@@ -54,12 +52,14 @@ async function execute(message, args, db) {
         });
 
         // note the leaving in the queue channel
-        const queueEmbed = new Discord.RichEmbed().setColor(config.colors.success)
-            .setDescription(`${message.author} left queue, queue filled: \`${taken -1}/${capacity}\``);
-        message.guild.channels.get(channelID).send(queueEmbed);
+        return helper.replyToChannel(message, channelID, `${message.author} left queue`, `Queue filled: \`${taken -1}/${capacity}\``);
     }
     else {
-        return helper.replyCustomError(message, `Oops! You are not in the queue \`${queueName}\`. Did you type it right?`);
+        // assume that the user has been in line, but is now done
+        // make channel invisible to user
+        message.guild.channels.get(channelID).overwritePermissions(message.author, { 'VIEW_CHANNEL': false, 'SEND_MESSAGES': false });
+
+        return helper.replySuccess(message, `${message.author} left the queue ${queueName}`);
     }
 }
 

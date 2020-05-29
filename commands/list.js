@@ -1,5 +1,4 @@
-const config = require('../config/config');
-const Discord = require('discord.js');
+const helper = require('../js/helpers');
 
 const options = {
 
@@ -19,9 +18,6 @@ async function execute(message, args, db) {
     const queueDB = db.collection('queues');
     const findarr = await queueDB.find().toArray();
 
-    const replyEmbed = new Discord.RichEmbed().setColor(config.colors.info)
-        .setTitle(`Currently ${findarr.length} active queues.`);
-
     console.log(`[ INFO ]  > ${findarr.length} currently active.`);
 
     let reply = '';
@@ -30,10 +26,8 @@ async function execute(message, args, db) {
         reply += `\n**${elem.name}**: (host: <@${elem.host}>), `;
         reply += elem.available == 0 ? 'No spaces left.' : `${elem.taken} / ${elem.capacity}.`;
     });
-    replyEmbed.setDescription(reply);
 
-    message.channel.send(replyEmbed);
-
+    return helper.replySuccess(message, `Currently ${findarr.length} active queues.`, reply);
 }
 
 module.exports = options;

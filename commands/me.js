@@ -1,5 +1,5 @@
 const config = require('../config/config');
-const Discord = require('discord.js');
+const helper = require('../js/helpers');
 
 const options = {
 
@@ -20,19 +20,12 @@ async function execute(message, args, db) {
 
     // if userdata not found, abort
     if (userArr.length == 0) {
-        console.log('[ INFO ]  > User hasn\'t added info. Aborting.');
-        const errEmbed = new Discord.RichEmbed().setColor(config.colors.error)
-            .setTitle('Oops! You haven\'t added your info yet.')
-            .setDescription(`Use \`${config.prefix}set\` to set that up`);
-        return message.channel.send(errEmbed);
+        return helper.replyCustomError(message, 'Oops! You haven\'t added your info yet.', `Use \`${config.prefix}set\` to set that up`, '> User hasn\'t added info. Aborting.');
     }
 
     const { ign, island } = userArr[0];
 
-    const replyEmbed = new Discord.RichEmbed().setColor(config.colors.info)
-        .setTitle('Your info:')
-        .setDescription(`**IGN**: \`${ign || '[no data]'}\` \n**Island**: \`${island || '[no data]'}\``);
-    return message.channel.send(replyEmbed);
+    return helper.replySuccess(message, 'Your info:', `**IGN**: \`${ign || '[no data]'}\` \n**Island**: \`${island || '[no data]'}\``);
 }
 
 module.exports = options;

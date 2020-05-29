@@ -103,8 +103,9 @@ The bot will use collections `queues` and `userdata`.
 	channelID: ID,
 	name: String,
 	host: ID,
-	capacity: Number,
-	taken: Number,
+	capacity: Number, // total amount of people that the host allows in the queue
+	taken: Number, // the amount of slots in queue that have been claimed
+	done: Number, // amount of people who are done, and are not waiting anymore
 	users: [ID],
 }
 ```

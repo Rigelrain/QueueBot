@@ -22,4 +22,6 @@ module.exports = {
         // a moderator-level role IDs
         admin: [ '424242424242424242', '424242424242424242' ],
     },
+
+    nextWaitTime: 300000, // how long a member is kept in queue channel before kick
 };
