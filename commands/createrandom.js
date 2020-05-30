@@ -1,5 +1,4 @@
 const config = require('../config/config');
-const idConfig = require('../config/id-config');
 const Discord = require('discord.js');
 
 let queueChannel, listMsg;
@@ -39,8 +38,8 @@ async function execute(message, args, db) {
 
     console.log(`[ INFO ] Creating queue with name "${name}" and capacity ${capacity}`);
 
-    const queueListChannelID = process.env.LISTCHANNELID || config.queueListChannelID;
-    const adminID = process.eventNames.ADMIN || config.roles.admin;
+    const queueListChannelID = process.env.LISTCHANNELID || require('../config/id-config').queueListChannelID;
+    const adminID = process.eventNames.ADMIN || require('../config/id-config').roles.admin;
 
     const queueDB = db.collection('queues');
 
@@ -86,7 +85,7 @@ async function execute(message, args, db) {
     // send header message to queue channel
     queueChannel = await message.guild.createChannel(name, {
         type: 'text',
-        parent: process.env.CATEGORYID || idConfig.queueCategoryID,
+        parent: process.env.CATEGORYID || require('../config/id-config').queueCategoryID,
         permissionOverwrites: permissions,
     });
     const queueEmbed = new Discord.RichEmbed().setColor(config.colors.info)
@@ -117,7 +116,7 @@ async function execute(message, args, db) {
 
 // Reaction event handlers from main file
 async function reactAdd(reaction, user, client, db) {
-    const queueListChannelID = process.env.LISTCHANNELID || idConfig.queueListChannelID;
+    const queueListChannelID = process.env.LISTCHANNELID || require('../config/id-config').queueListChannelID;
 
     // ignore reacts on messages not in #queue-list
     if (reaction.message.channel.id != queueListChannelID) return;
@@ -201,7 +200,7 @@ async function reactAdd(reaction, user, client, db) {
 
 
 async function reactRemove(reaction, user, client, db) {
-    const queueListChannelID = process.env.LISTCHANNELID || idConfig.queueListChannelID;
+    const queueListChannelID = process.env.LISTCHANNELID || require('../config/id-config').queueListChannelID;
 
     // ignore reacts on messages not in #queue-list
     if (reaction.message.channel.id != queueListChannelID) return;

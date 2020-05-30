@@ -1,12 +1,11 @@
 const config = require('../config/config');
-const idConfig = require('../config/id-config');
 const Discord = require('discord.js');
 
 module.exports = {
     checkRole(member, role) {
         // console.log(`[ DEBUG ] Checking to see if they have ${role} role`);
-        const adminRole = process.env.ADMIN || idConfig.roles.admin;
-        const middlemanRole = process.env.MIDDLEMAN || idConfig.roles.middleman;
+        const adminRole = process.env.ADMIN || require('../config/id-config').roles.admin;
+        const middlemanRole = process.env.MIDDLEMAN || require('../config/id-config').roles.middleman;
 
         let roleMatch = false;
 

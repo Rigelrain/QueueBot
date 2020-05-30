@@ -1,4 +1,3 @@
-const idConfig = require('../config/id-config');
 const helper = require('../js/helpers');
 
 const options = {
@@ -15,7 +14,7 @@ const options = {
 };
 
 async function execute(message, args, db) {
-    const queueListChannelID = process.env.LISTCHANNELID || idConfig.queueListChannelID;
+    const queueListChannelID = process.env.LISTCHANNELID || require('../config/id-config').queueListChannelID;
 
     let queueName = args.join('-').toLowerCase();
     if(!queueName || queueName.length === 0) {

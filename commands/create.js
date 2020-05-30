@@ -1,5 +1,4 @@
 const config = require('../config/config');
-const idConfig = require('../config/id-config');
 const Discord = require('discord.js');
 const helper = require('../js/helpers');
 
@@ -56,7 +55,7 @@ async function execute(message, args, db) {
 
     const queueChannel = await message.guild.createChannel(name, {
         type: 'text',
-        parent: process.env.CATEGORYID || idConfig.queueCategoryID,
+        parent: process.env.CATEGORYID || require('../config/id-config').queueCategoryID,
         permissionOverwrites: permissions,
     });
 

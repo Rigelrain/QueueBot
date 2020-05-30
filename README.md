@@ -141,6 +141,7 @@ This bot is configured to be deployed to Heroku.
 Sensitive tokens should be saved into Heroku Dashboard in Config Vars. In code these are read as `process.ENV.<key>`. Add the following 'keys' to the Config Vars:
 - TOKEN - Discord bot token
 - DBPATH - Path to Mongo database in full
+- DBNAME - Name of the database with these collections
 - CATEGORYID - ID of the queue category
 - LISTCHANNELID - ID of the queue list channel
 - MIDDLEMAN - ID of the role that can act as middleman

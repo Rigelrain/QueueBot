@@ -6,11 +6,10 @@ const client = new Discord.Client();
 const fs = require('fs');
 
 // get sensitive tokens from process.ENV (for production) or from config files (for local development)
-const { token: configToken } = require('./config/token');
-const token = process.env.TOKEN || configToken;
+const token = process.env.TOKEN || require('./config/token').token;
 
-const mdbconf = require('./config/mongodb_config');
-const mongoURL = process.env.DBPATH || mdbconf.path;
+const mongoURL = process.env.DBPATH || require('./config/mongodb_config').path;
+const mongoDBname = process.env.DBNAME || require('./config/mongodb_config').dbname;
 
 const config = require('./config/config');
 const helper = require('./js/helpers');
@@ -161,7 +160,7 @@ console.log(`[ START ] Connecting to MongoDB... ( ${mongoURL} )`);
 MongoClient.connect(mongoURL, function(err, mongoclient) {
     if (err) { throw err; }
 
-    db = mongoclient.db(mdbconf.dbname);
+    db = mongoclient.db(mongoDBname);
 
     console.log('[ START ] Logging in to Discord...');
     client.login(token);
