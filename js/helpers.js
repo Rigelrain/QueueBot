@@ -1,15 +1,32 @@
 const config = require('../config/config');
+const idConfig = require('../config/id-config');
 const Discord = require('discord.js');
 
 module.exports = {
     checkRole(member, role) {
         // console.log(`[ DEBUG ] Checking to see if they have ${role} role`);
-        if(member.roles.some(r => config.roles[role].includes(r.id))) {
-            return true;
+        const adminRole = process.env.ADMIN || idConfig.roles.admin;
+        const middlemanRole = process.env.MIDDLEMAN || idConfig.roles.middleman;
+
+        let roleMatch = false;
+
+        switch(role) {
+        case 'admin':
+            if(member.roles.some(r => r.id == adminRole)) {
+                roleMatch = true;
+            }
+            break;
+        case 'middleman':
+            if(member.roles.some(r => r.id == middlemanRole)) {
+                roleMatch = true;
+            }
+            break;
+        default:
+            console.log(`[ ERROR ] Invalid role ${role} being checked.`);
+            break;
         }
-        else {
-            return false;
-        }
+
+        return roleMatch;
     },
     replyGeneralError(message, err) {
         console.log(`[ ERROR ] ${JSON.stringify(err, null ,2)}`);

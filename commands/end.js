@@ -1,4 +1,4 @@
-const config = require('../config/config');
+const idConfig = require('../config/id-config');
 const helper = require('../js/helpers');
 
 const options = {
@@ -15,6 +15,8 @@ const options = {
 };
 
 async function execute(message, args, db) {
+    const queueListChannelID = process.env.LISTCHANNELID || idConfig.queueListChannelID;
+
     let queueName = args.join('-').toLowerCase();
     if(!queueName || queueName.length === 0) {
         // maybe command was given in a queue channel
@@ -39,7 +41,7 @@ async function execute(message, args, db) {
 
     // this is to delete the random queue message, so members cannot react anymore
     if (findarr[0].random) {
-        message.guild.channels.get(config.queueListChannelID).fetchMessage(findarr[0].listMsgID).then(msg => msg.delete());
+        message.guild.channels.get(queueListChannelID).fetchMessage(findarr[0].listMsgID).then(msg => msg.delete());
     }
 
     // delete from database
@@ -48,7 +50,7 @@ async function execute(message, args, db) {
     console.log(`[ INFO ]  > Queue "${queueName}" deleted.`);
 
     // send the deletion confirmation to the list channel
-    await helper.replyToChannel(message, config.queueListChannelID, `Queue \`${queueName}\` deleted.`);
+    await helper.replyToChannel(message, queueListChannelID, `Queue \`${queueName}\` deleted.`);
 
     return;
 }

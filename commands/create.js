@@ -1,4 +1,5 @@
 const config = require('../config/config');
+const idConfig = require('../config/id-config');
 const Discord = require('discord.js');
 const helper = require('../js/helpers');
 
@@ -33,6 +34,8 @@ async function execute(message, args, db) {
 
     console.log(`[ INFO ] Creating queue with name "${name}" and capacity ${capacity}`);
 
+    const adminID = process.eventNames.ADMIN || config.roles.admin;
+
     const queueDB = db.collection('queues');
 
     // look for name in db to see if already used
@@ -48,19 +51,12 @@ async function execute(message, args, db) {
         { id: message.client.user, allow: ['VIEW_CHANNEL', 'SEND_MESSAGES'] }, // the bot can send
         { id: message.author, allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY'] }, // queue host can see and send
         { id: message.guild.id, deny: ['VIEW_CHANNEL'] }, // @everyone cannot
+        { id: adminID, allow: ['VIEW_CHANNEL', 'SEND_MESSAGES','READ_MESSAGE_HISTORY'] }, // admin role(s) can send
     ];
-
-    // admin role(s) can send
-    config.roles.admin.forEach(roleID => {
-        permissions.push({
-            id: roleID, 
-            allow: ['VIEW_CHANNEL', 'SEND_MESSAGES','READ_MESSAGE_HISTORY'],
-        });
-    });
 
     const queueChannel = await message.guild.createChannel(name, {
         type: 'text',
-        parent: config.queueCategoryID,
+        parent: process.env.CATEGORYID || idConfig.queueCategoryID,
         permissionOverwrites: permissions,
     });
 

@@ -73,7 +73,21 @@ Main file is `queuebot.js`.  `npm start` will start the bot.
 
 Configuration files are under `/config`.
 
-First make a copy or rename the config-template.js file. New file should be named `config.js`. Overwrite the fields as you see fit.
+### General configurations
+
+General configurations are in `/config/config.js`:
+- bot prefix
+- colors
+- reaction emoji
+- time to wait until a user is kicked out of channel after being picked from queue
+
+### Server-specific configurations
+
+This configuration holds information about the server categories, channels and roles through their IDs. Since these are specific to your own server, the actual IDs are not in version control.
+
+First make a copy or rename the id-config-template.js file. New file should be named `id-config.js`. Overwrite the fields as you see fit.
+
+### Discord Access configuration
 
 Bot token goes in `token.js`. Create if not present:
 ```
@@ -120,3 +134,14 @@ The bot will use collections `queues` and `userdata`.
 ```
 
 Make sure the bot has react permissions in the configured `#queue-list` channel!
+
+## Deployment
+This bot is configured to be deployed to Heroku.
+
+Sensitive tokens should be saved into Heroku Dashboard in Config Vars. In code these are read as `process.ENV.<key>`. Add the following 'keys' to the Config Vars:
+- TOKEN - Discord bot token
+- DBPATH - Path to Mongo database in full
+- CATEGORYID - ID of the queue category
+- LISTCHANNELID - ID of the queue list channel
+- MIDDLEMAN - ID of the role that can act as middleman
+- ADMIN - ID of the role that can act as admin/moderator

@@ -1,4 +1,5 @@
 const config = require('../config/config');
+const idConfig = require('../config/id-config');
 const Discord = require('discord.js');
 
 let queueChannel, listMsg;
@@ -38,6 +39,9 @@ async function execute(message, args, db) {
 
     console.log(`[ INFO ] Creating queue with name "${name}" and capacity ${capacity}`);
 
+    const queueListChannelID = process.env.LISTCHANNELID || config.queueListChannelID;
+    const adminID = process.eventNames.ADMIN || config.roles.admin;
+
     const queueDB = db.collection('queues');
 
     // look for name in db to see if already used
@@ -68,7 +72,7 @@ async function execute(message, args, db) {
         .setDescription(`**Host**: ${message.author}`)
         .addField(`0/${capacity} spots taken, React with ${config.reactEmoji} to join the queue.`);
 
-    listMsg = await message.guild.channels.get(config.queueListChannelID).send(listEmbed);
+    listMsg = await message.guild.channels.get(queueListChannelID).send(listEmbed);
     listMsg.react(message.guild.emojis.get(config.reactEmoji.slice(-19, -1))); // extract emoji id from full string
 
     // create channel w/ perms (only allow needed people access to channel)
@@ -76,13 +80,13 @@ async function execute(message, args, db) {
         { id: message.client.user, allow: ['VIEW_CHANNEL', 'SEND_MESSAGES'] }, // the bot can send
         { id: message.author, allow: ['VIEW_CHANNEL'] }, // queue host can see
         { id: message.guild.id, deny: ['VIEW_CHANNEL'] }, // @everyone cannot
-        { id: config.roles.admin, allow: ['VIEW_CHANNEL', 'SEND_MESSAGES'] }, // admin role can send
+        { id: adminID, allow: ['VIEW_CHANNEL', 'SEND_MESSAGES','READ_MESSAGE_HISTORY'] }, // admin role(s) can send
     ];
 
     // send header message to queue channel
     queueChannel = await message.guild.createChannel(name, {
         type: 'text',
-        parent: config.queueCategoryID,
+        parent: process.env.CATEGORYID || idConfig.queueCategoryID,
         permissionOverwrites: permissions,
     });
     const queueEmbed = new Discord.RichEmbed().setColor(config.colors.info)
@@ -113,9 +117,10 @@ async function execute(message, args, db) {
 
 // Reaction event handlers from main file
 async function reactAdd(reaction, user, client, db) {
+    const queueListChannelID = process.env.LISTCHANNELID || idConfig.queueListChannelID;
 
     // ignore reacts on messages not in #queue-list
-    if (reaction.message.channel.id != config.queueListChannelID) return;
+    if (reaction.message.channel.id != queueListChannelID) return;
 
     // look for queue in db
     const queueDB = db.collection('queues');
@@ -196,9 +201,10 @@ async function reactAdd(reaction, user, client, db) {
 
 
 async function reactRemove(reaction, user, client, db) {
+    const queueListChannelID = process.env.LISTCHANNELID || idConfig.queueListChannelID;
 
     // ignore reacts on messages not in #queue-list
-    if (reaction.message.channel.id != config.queueListChannelID) return;
+    if (reaction.message.channel.id != queueListChannelID) return;
 
     // look for queue in db
     const queueDB = db.collection('queues');

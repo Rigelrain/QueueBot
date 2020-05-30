@@ -5,17 +5,18 @@ const client = new Discord.Client();
 // file i/o
 const fs = require('fs');
 
-// grab settings from file
-const { token } = require('./config/token');
+// get sensitive tokens from process.ENV (for production) or from config files (for local development)
+const { token: configToken } = require('./config/token');
+const token = process.env.TOKEN || configToken;
+
+const mdbconf = require('./config/mongodb_config');
+const mongoURL = process.env.DBPATH || mdbconf.path;
+
 const config = require('./config/config');
 const helper = require('./js/helpers');
 
 // connect to mongodb server
 const MongoClient = require('mongodb').MongoClient;
-const mdbconf = require('./config/mongodb_config');
-// mdbconf.port = mdbconf.port || '27017';
-// ~ const mongoURL = `mongodb://${mdbconf.user}:${mdbconf.pass}@${mdbconf.host}:${mdbconf.port}/`;
-const mongoURL = mdbconf.path;
 let db;
 
 // import commands from dir

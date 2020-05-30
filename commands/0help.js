@@ -49,12 +49,8 @@ async function execute(message) {
             }
 
             if (cmd.roleRestrict) {
-                const roleIDs = config.roles[`${cmd.roleRestrict}`];
-                helpStr += '\n*(Restricted to roles: ';
-
-                roleIDs.forEach(roleID => helpStr += `@${ message.guild.roles.get(roleID).name} `);
-
-                helpStr += ')*';
+                const roleID = config.roles[`${cmd.roleRestrict}`];
+                helpStr += `\n*(Restricted to @${ message.guild.roles.get(roleID).name } only)*`;
             }
 
             helpEmbed.addField(`**${cmd.name}**` + (cmd.aliases ? ', ' + cmd.aliases.join(', ') : ''), helpStr);
