@@ -54,7 +54,8 @@ async function execute(message, args, db) {
         }, 
     });
 
-    const nextUser = await userdataDB.find({userID: nextUserID}).toArray();
+    const nextUserArr = await userdataDB.find({userID: nextUserID}).toArray();
+    const nextUser = nextUserArr[0];
 
     await helper.replyToChannel(message, channelID, 'Next up is...', `User: <@${nextUser.userID}> \nIGN: ${nextUser.ign} \nFrom: ${nextUser.island} \n--- \nQueue now has ${taken-done-1} members in line. \nThere's still room for ${capacity-taken} people.`);
 

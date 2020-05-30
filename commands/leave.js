@@ -59,7 +59,7 @@ async function execute(message, args, db) {
         // make channel invisible to user
         message.guild.channels.get(channelID).overwritePermissions(message.author, { 'VIEW_CHANNEL': false, 'SEND_MESSAGES': false });
 
-        return helper.replySuccess(message, `${message.author} left the queue ${queueName}`);
+        return helper.replySuccess(message, `${message.author.name} left the queue ${queueName}`);
     }
 }
 

@@ -32,9 +32,8 @@ async function execute(message) {
         .setFooter('QueueBot created for Nook Horizons', ''); // TODO add a PNG image link in here
 
     commands.forEach((cmd) => {
-
         // only show role-restricted commands if member is in a server and they have that role
-        if (!cmd.roleRestrict || ( cmd.roleRestrict && message.guild && !helper.checkRole(message.member, cmd.roleRestrict) ) ) {
+        if (!cmd.roleRestrict || ( cmd.roleRestrict && message.guild && helper.checkRole(message.member, cmd.roleRestrict) ) ) {
 
             let helpStr = cmd.description;
 
@@ -50,16 +49,19 @@ async function execute(message) {
             }
 
             if (cmd.roleRestrict) {
-                const roleID = config.roles[`${cmd.roleRestrict}`];
-                helpStr += `\n*(Restricted to @${ message.guild.roles.get(roleID).name } only)*`;
+                const roleIDs = config.roles[`${cmd.roleRestrict}`];
+                helpStr += '\n*(Restricted to roles: ';
+
+                roleIDs.forEach(roleID => helpStr += `@${ message.guild.roles.get(roleID).name} `);
+
+                helpStr += ')*';
             }
 
-            helpStr += '\nDo not include <> nor [] - <> means required and [] means optional.';
-
             helpEmbed.addField(`**${cmd.name}**` + (cmd.aliases ? ', ' + cmd.aliases.join(', ') : ''), helpStr);
-
         }
     });
+
+    helpEmbed.addField('Note:', '\nDo not include <> nor [] - <> means required and [] means optional.');
 
     message.channel.send(helpEmbed);
 

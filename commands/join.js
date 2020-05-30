@@ -88,7 +88,7 @@ async function execute(message, args, db) {
         .setTitle('Added you to the queue.')
         .setDescription(`You're in position ${taken + 1} of ${capacity}.`);
     message.channel.send(replyEmbed);
-
+    return;
 }
 
 module.exports = options;
