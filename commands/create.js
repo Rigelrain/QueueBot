@@ -33,7 +33,7 @@ async function execute(message, args, db) {
 
     console.log(`[ INFO ] Creating queue with name "${name}" and capacity ${capacity}`);
 
-    const adminID = process.eventNames.ADMIN || config.roles.admin;
+    const adminID = process.env.ADMIN || require('../config/id-config').roles.admin;
 
     const queueDB = db.collection('queues');
 
