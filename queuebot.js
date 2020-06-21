@@ -115,11 +115,11 @@ client.on('message', message => {
 // Actual handling in random queue command
 client.on('messageReactionAdd', (reaction, user) => {
     if (user.id == client.user.id) return; // ignore self react
-    client.commands.get('random').reactAdd(reaction, user, client, db);
+    //client.commands.get('random').reactAdd(reaction, user, client, db);
 });
 client.on('messageReactionRemove', (reaction, user) => {
     if (user.id == client.user.id) return; // ignore self react
-    client.commands.get('random').reactRemove(reaction, user, client, db);
+    //client.commands.get('random').reactRemove(reaction, user, client, db);
 });
 
 // Use raw listener to catch uncached reaction events
