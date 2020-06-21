@@ -47,10 +47,10 @@ async function execute(message, args, db) {
 
     // create channel w/ perms (only allow needed people access to channel)
     const permissions = [
-        { id: message.client.user, allow: ['VIEW_CHANNEL', 'SEND_MESSAGES'] }, // the bot can send
+        { id: message.client.user, allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'MANAGE_CHANNELS'] }, // the bot can send and manage the channel
         { id: message.author, allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY'] }, // queue host can see and send
         { id: message.guild.id, deny: ['VIEW_CHANNEL'] }, // @everyone cannot
-        { id: adminID, allow: ['VIEW_CHANNEL', 'SEND_MESSAGES','READ_MESSAGE_HISTORY'] }, // admin role(s) can send
+        { id: adminID, allow: ['VIEW_CHANNEL', 'SEND_MESSAGES','READ_MESSAGE_HISTORY'] }, // admin role can send
     ];
 
     const queueChannel = await message.guild.createChannel(name, {
