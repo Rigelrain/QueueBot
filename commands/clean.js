@@ -12,7 +12,7 @@ const options = {
     aliases: ['removeme', 'purge', 'removedata', 'delete'],
 
     usage: '',
-    description: 'Removes your user data from the bot. Also removes from all queues you are currently in,.',
+    description: 'Removes your user data from the bot. Also removes you from all queues you are currently in.',
 
     cooldown: 3,
     minArgs: 0,
